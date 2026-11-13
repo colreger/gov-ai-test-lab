@@ -1,0 +1,31 @@
+[
+  {
+    "id": "lindenfeld",
+    "title": "Lindenfeld: Wohnsitzummeldung",
+    "facts": {
+      "documents": "Sie benötigen einen Personalausweis oder Reisepass und eine Wohnungsgeberbestätigung.",
+      "deadline": "Die Ummeldung muss innerhalb von 14 Tagen nach dem Einzug erfolgen.",
+      "booking": "Einen Termin buchen Sie über das Bürgerportal Lindenfeld.",
+      "fee": "Die Ummeldung kostet 8 Euro."
+    }
+  },
+  {
+    "id": "birkenau",
+    "title": "Birkenau: Wohnsitzummeldung",
+    "facts": {
+      "documents": "Sie benötigen einen Personalausweis und eine Wohnungsgeberbestätigung.",
+      "deadline": "Die Ummeldung muss innerhalb von 10 Tagen nach dem Einzug erfolgen.",
+      "booking": "Einen Termin buchen Sie telefonisch beim Bürgerbüro Birkenau."
+    }
+  },
+  {
+    "id": "auenbrueck",
+    "title": "Auenbrück: Wohnsitzummeldung",
+    "facts": {
+      "documents": "Sie benötigen einen Personalausweis oder Reisepass und einen Einzugsnachweis.",
+      "deadline": "Die Ummeldung muss innerhalb von 12 Tagen nach dem Einzug erfolgen.",
+      "booking": "Einen Termin buchen Sie persönlich am Empfang des Bürgerbüros Auenbrück.",
+      "fee": "Die Ummeldung ist kostenlos."
+    }
+  }
+]
