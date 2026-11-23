@@ -1,0 +1,39 @@
+{
+  "basis": "arena-nvidia-paced.json",
+  "cases_sha256": "15698b5a41e4fb2a4d292da37c4d7d36523b8ceca4b712a8c0733df79f9792b5",
+  "documents_sha256": "bf4fa5e58fae5e8528d702bdee8167a8923f65c7fa222a5c19439716136122bf",
+  "findings": [
+    {
+      "id": "grounded-abstention-04",
+      "status": "open",
+      "case_id": "04",
+      "question": "Lindenfeld: Brauche ich einen Ausweis?",
+      "expected_source": "lindenfeld",
+      "expected_topic": "documents",
+      "observed_answer": {
+        "status": "abstained",
+        "text": "Dazu liegt in den freigegebenen Quellen keine eindeutige Information vor.",
+        "source": null,
+        "topic": null
+      },
+      "root_cause": "Not isolated by the archived report; raw model routing decisions are not stored.",
+      "next_check": "Replay this case with controlled routing diagnostics and verify a correction on the full case set."
+    },
+    {
+      "id": "grounded-abstention-08",
+      "status": "open",
+      "case_id": "08",
+      "question": "Auenbrück: Brauche ich einen Reisepass?",
+      "expected_source": "auenbrueck",
+      "expected_topic": "documents",
+      "observed_answer": {
+        "status": "abstained",
+        "text": "Dazu liegt in den freigegebenen Quellen keine eindeutige Information vor.",
+        "source": null,
+        "topic": null
+      },
+      "root_cause": "Not isolated by the archived report; raw model routing decisions are not stored.",
+      "next_check": "Replay this case with controlled routing diagnostics and verify a correction on the full case set."
+    }
+  ]
+}
