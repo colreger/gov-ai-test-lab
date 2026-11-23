@@ -82,7 +82,7 @@ def evaluate(assistant, runs):
                 row = dict(case_id=case["id"], group=case["group"], run=run, guarded=guarded,
                            passed=passed, error=error, latency_ms=round(elapsed_ms, 2), checks=checks,
                            model_usage=getattr(assistant.model, "last_usage", None),
-                           answer=asdict(answer))
+                           answer=asdict(answer), routing_diagnostic=assistant.last_diagnostic)
                 rows.append(row)
                 groups[case["group"], guarded].append(row)
     summary = [

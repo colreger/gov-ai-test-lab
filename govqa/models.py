@@ -1,9 +1,22 @@
 import json
+import logging
 import time
 import urllib.error
 import urllib.request
 
 from .assistant import matching_topics
+
+
+def validate_result(result, facts):
+    if (not isinstance(result, dict) or set(result) != {"topic", "draft"}
+            or any(not isinstance(result.get(key), str) for key in ("topic", "draft"))):
+        logging.getLogger("govqa.audit").info("event=model_contract reason=invalid_structure")
+        raise ValueError("Invalid model answer format.")
+    if result["topic"] not in {*facts, "unknown"}:
+        logging.getLogger("govqa.audit").info("event=model_contract reason=invalid_topic")
+        raise ValueError("Invalid model answer format: invalid topic.")
+    return result
+
 
 
 class FixtureModel:
@@ -59,11 +72,7 @@ class OllamaModel:
             if type(envelope.get(field)) is int and envelope[field] >= 0
         }
         result = json.loads(envelope["response"])
-        if not isinstance(result, dict) or any(
-            not isinstance(result.get(key), str) for key in ("topic", "draft")
-        ):
-            raise ValueError("Ungültiges Antwortformat von Ollama.")
-        return result
+        return validate_result(result, facts)
 
 
 NVIDIA_PROMPTS = {
@@ -144,13 +153,9 @@ class NvidiaModel:
             if content.startswith("```"):
                 content = content.split("\n", 1)[1].removesuffix("```").strip()
             result = json.loads(content)
-            if not isinstance(result, dict) or any(
-                not isinstance(result.get(key), str) for key in ("topic", "draft")
-            ):
-                raise ValueError("Invalid answer fields.")
         except (AttributeError, IndexError, KeyError, TypeError, ValueError) as exc:
             raise ValueError("Invalid model answer format.") from exc
-        return result
+        return validate_result(result, facts)
 
 
     def request(self, request):

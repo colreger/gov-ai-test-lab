@@ -26,10 +26,10 @@ class NvidiaAdapterTests(unittest.TestCase):
 
     def test_malformed_model_payload_rejected(self):
         model = self.model()
-        for content in ('{"topic":42,"draft":"text"}', 'not json'):
+        for content in ('{"topic":42,"draft":"text"}', 'not json', '{"topic":"whole answer sentence","draft":"text"}', '{"topic":"documents","draft":"text","extra":true}'):
             with patch.object(model, "request", return_value={"choices": [{"message": {"content": content}}]}):
                 with self.assertRaisesRegex(ValueError, "Invalid model answer format"):
-                    model.generate("Synthetic question", "fictional", {})
+                    model.generate("Synthetic question", "fictional", {"documents": "Approved text"})
 
     def test_429_retry_count_and_backoff_are_bounded(self):
         clock = [0.0]

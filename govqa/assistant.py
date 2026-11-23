@@ -45,30 +45,46 @@ class Assistant:
         self.documents = load_documents() if documents is None else documents
 
     def ask(self, question, *, guarded=True):
+        self.last_diagnostic = {"reason": "started"}
         answer = self._ask(question, guarded=guarded)
         AUDIT.info("event=answer status=%s guarded=%s", answer.status, guarded)
         return answer
 
+    def _diagnose(self, reason, topic=None):
+        # Never retain the prompt, draft or arbitrary model strings.
+        self.last_diagnostic = {"reason": reason, "model_topic": topic if topic in TOPICS or topic == "unknown" else "invalid"}
+        AUDIT.info("event=routing reason=%s model_topic=%s", reason, self.last_diagnostic["model_topic"])
+
     def _ask(self, question, *, guarded):
         document = select_document(question, self.documents)
         if document is None:
+            self._diagnose("source_unresolved")
             return Answer("abstained", FALLBACK)
 
         topics = matching_topics(question)
         if guarded and len(topics) > 1:
+            self._diagnose("multiple_topics")
             return Answer("abstained", FALLBACK)
         if guarded and topics == ["fee"]:
+            self._diagnose("fee_source_only")
             return self._render(document, "fee")
 
         context = dict(document["facts"])
         if guarded:
             context.pop("fee", None)
-        result = self.model.generate(question, document["id"], context)
+        try:
+            result = self.model.generate(question, document["id"], context)
+        except ValueError:
+            self._diagnose("model_contract_rejected")
+            raise
         if not guarded:
+            self._diagnose("unguarded_draft", result["topic"])
             return Answer("draft", result["draft"], document["id"], result["topic"])
         topic = result["topic"]
         if topic not in context or (topics and topic != topics[0]):
+            self._diagnose("topic_not_in_context" if topic not in context else "topic_mismatch", topic)
             return Answer("abstained", FALLBACK)
+        self._diagnose("approved_source", topic)
         return self._render(document, topic)
 
     @staticmethod

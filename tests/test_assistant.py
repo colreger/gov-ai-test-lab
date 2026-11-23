@@ -78,7 +78,7 @@ class OllamaContractTests(unittest.TestCase):
     def test_json_contract(self, urlopen):
         draft = {"topic": "documents", "draft": "Beispiel"}
         urlopen.return_value = io.BytesIO(json.dumps({"response": json.dumps(draft)}).encode())
-        self.assertEqual(OllamaModel("local").generate("Test", "source", {}), draft)
+        self.assertEqual(OllamaModel("local").generate("Test", "source", {"documents": "Beispiel"}), draft)
         request = urlopen.call_args.args[0]
         payload = json.loads(request.data)
         self.assertEqual(request.full_url, "http://127.0.0.1:11434/api/generate")
@@ -89,4 +89,4 @@ class OllamaContractTests(unittest.TestCase):
     def test_rejects_malformed_model_response(self, urlopen):
         urlopen.return_value = io.BytesIO(b'{"response":"{\"topic\":42}"}')
         with self.assertRaises(ValueError):
-            OllamaModel("local").generate("Test", "source", {})
+            OllamaModel("local").generate("Test", "source", {"documents": "Beispiel"})

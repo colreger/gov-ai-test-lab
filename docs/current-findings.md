@@ -27,9 +27,33 @@ nicht die genaue Ursache der Modellentscheidung. Ohne neue Diagnose darf weder
 eine bestimmte Ursache noch eine erfolgreiche Korrektur behauptet werden.
 Maschinenlesbarer Stand: [open-findings.json](../evidence/open-findings.json).
 
-Nächster Diagnoseschritt ist eine kontrollierte Wiederholung mit geeigneten
-Routing-Diagnosen, anschließend eine Regression über den vollständigen Bestand.
-Dabei ist die Datenminimierung des regulären Audit-Logs beizubehalten.
+### Diagnose und strengere Formatprüfung umgesetzt
+
+Die lokale Ablaufprüfung findet für beide Fragen die richtige Ortsquelle und
+`documents` als einziges erkanntes Thema. Bei einer Modellantwort mit diesem
+Thema wird der freigegebene Quellentext ausgegeben. Jede andere Themenentscheidung
+führt an der Schutzprüfung zur Enthaltung. Im archivierten ungeschützten
+Lindenfeld-Lauf steht tatsächlich der ganze Antwortsatz im Themenfeld; dies ist
+ein belegter Formatverstoß in diesem separaten Lauf, kein Nachweis des genauen
+Werts im geschützten Lauf.
+
+Die Adapter für NVIDIA und Ollama akzeptieren jetzt ausschließlich die zwei
+Textfelder `topic` und `draft` sowie einen vorhandenen Quellenschlüssel oder
+`unknown` als Thema. Zusätzliche Felder und freie Sätze als Thema werden als
+Formatfehler abgewiesen. Es erfolgt keine automatische Umdeutung der Antwort.
+
+Routing bedeutet hier die Zuordnung einer Frage zu einer Themenkategorie.
+Das Audit-Log und neue Evaluationsberichte speichern dafür feste Ursachencodes:
+`model_contract_rejected`, `topic_not_in_context`, `topic_mismatch` oder
+`approved_source`. Frage, Antwortentwurf und beliebige Modellstrings werden
+nicht protokolliert. Die Schutzregeln bleiben bestehen.
+
+18 lokale Tests bestehen, einschließlich beider Fälle mit kontrollierten
+Modellantworten und der Adapterprüfung; die deterministische Auswertung bleibt
+bei 50/50 geschützten Fällen. Ein erneuter externer Modelllauf wurde nicht
+vorgenommen. Die zwei historischen Modellfehler bleiben bis zu einer erneuten
+kontrollierten Messung offen. Bei einer Wiederholung enthält jeder Fall nun
+`routing_diagnostic` zur Eingrenzung der Fehlerstelle.
 
 ## Weitere Grenzen
 

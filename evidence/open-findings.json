@@ -16,8 +16,8 @@
         "source": null,
         "topic": null
       },
-      "root_cause": "Not isolated by the archived report; raw model routing decisions are not stored.",
-      "next_check": "Replay this case with controlled routing diagnostics and verify a correction on the full case set."
+      "root_cause": "Local replay isolates rejection to the model topic decision: source selection and question topic recognition succeed. Exact guarded model topic is absent from the archived report.",
+      "next_check": "Diagnostics and strict adapter topic validation implemented; repeat external grounded evaluation and inspect routing_diagnostic, then run full regression. Historical failure remains open."
     },
     {
       "id": "grounded-abstention-08",
@@ -32,8 +32,8 @@
         "source": null,
         "topic": null
       },
-      "root_cause": "Not isolated by the archived report; raw model routing decisions are not stored.",
-      "next_check": "Replay this case with controlled routing diagnostics and verify a correction on the full case set."
+      "root_cause": "Local replay isolates rejection to the model topic decision: source selection and question topic recognition succeed. Exact guarded model topic is absent from the archived report.",
+      "next_check": "Diagnostics and strict adapter topic validation implemented; repeat external grounded evaluation and inspect routing_diagnostic, then run full regression. Historical failure remains open."
     }
   ]
 }
