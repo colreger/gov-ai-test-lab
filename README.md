@@ -140,3 +140,9 @@ die zugunsten des Anbieterlimits eingelegte Wartezeit.
 
 - [Vollständiger Bericht](evidence/arena-nvidia-paced.json)
 - [Kompakter gepaarter Vergleich](evidence/arena-nvidia-paced-comparison.json)
+
+## Vorbereitete AWS-Demo
+
+Eine lokale interaktive Demo mit Bree, Hobbiton und Rivendell sowie ein
+getestetes Lambda-Upload-Paket liegen unter [demo/README.md](demo/README.md).
+Sie verwendet ein vorprogrammiertes Testmodell und ist noch nicht in AWS bereitgestellt.
